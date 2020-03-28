@@ -4,19 +4,21 @@ import (
 	"fmt"
 	"github.com/h2non/filetype"
 	"io/ioutil"
-	"log"
 	"os"
-	"path/filepath"
+	"sorter/requests"
 	"strings"
 )
 var videoFormats = []string{"mp4","mkv","avi","m4v","m4p","mov","qt","ogg","wmv","mpg","mpv","webm"}
-func SortVideo()  {
-	err := filepath.Walk(".",processPath)
-	if err != nil {
-		log.Println(err)
-	}
-}
 
+func SortVideo()  {
+	//err := filepath.Walk(".",processPath)
+	//if err != nil {
+	//	log.Println(err)
+	//}
+
+	fmt.Println("3333333333333333333333333333333333")
+	fmt.Println(requests.Get("search","friends"))
+}
 
 func processPath(path string, info os.FileInfo, err error) error {
 
@@ -39,6 +41,7 @@ func processPath(path string, info os.FileInfo, err error) error {
 	}
 	return nil
 }
+
 func mkdir(){
 
 }
