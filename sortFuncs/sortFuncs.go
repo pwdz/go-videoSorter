@@ -2,10 +2,14 @@ package sortFuncs
 
 import (
 	"fmt"
+	"golang.org/x/text/search"
+
+	//"gopkg.in/ini.v1"
 	"log"
 	"os"
 	"path/filepath"
 	"sorter/requests"
+	"strconv"
 	"strings"
 )
 var videoFormats = []string{"mp4","mkv","avi","m4v","m4p","mov","qt","ogg","wmv","mpg","mpv","webm"}
@@ -58,14 +62,43 @@ func processPath(path string, info os.FileInfo, err error) error {
 func findVideo(videoName string){
 
 	parts := strings.Split(strings.Trim(videoName," ")," ")
-	printSlice(parts)
 
-	for index,val := range parts{
-		//fmt.Println("Title Result:\n",requests.Get("title",val))
-		res := requests.Get("search",val)
-		a(res,parts,index)
-		break
+
+	printSlice(parts)
+	name :=""
+	year:=-1
+	season := -1
+	episode := -1
+	for _,val := range parts{
+		if isStringValid(val)&&isStringNumber(val)==-1{
+			fmt.Println("konde",isStringNumber(val))
+			if year==-1 && season==-1 && episode==-1{
+				name += val+" "
+			}else{
+
+			}
+		}else if name==""{
+			name += val+" "
+		} else {
+			y:=isStringNumber(val)
+			if y>=1950 && y<2200 {
+				year = y
+			}else if 0<y&&y<100{
+				if(season==-1) {
+					season = y
+				}else {
+					episode = y
+				}
+			}
+			//break
+		}
+		//fmt.Println("Title Result:\n",requests.Get("title",name))
+		//res := requests.Get("search",val)
+		//a(res,parts,index)
+		//break
 	}
+	fmt.Println("name:|"+strings.Trim(name," ")+"|year",year,"|season:",season,"|episode:",episode)
+	fmt.Println(requests.Get("title",strings.Trim(name," ")))
 
 }
 func a(result []requests.Omdb,parts []string,startIndex int){
@@ -114,6 +147,39 @@ func isStringValid(str string) bool{
 		}
 	}
 	return true
+}
+func isStringNumber(str string) int{
+	if year,err:=strconv.Atoi(str);err==nil{
+		fmt.Println("year",year)
+		//if 1950<year&&year<2150{
+			return year
+		//}
+	}
+	return -1
+}
+func isSearsonOrEpisode(str string)(int,int){//s,e
+	str = strings.ToLower(str)
+	season:=-1
+	episode:=-1
+	if strings.Contains(str,"season"){
+		str = strings.Replace(str,"season","",-1)
+		if num,err:=strconv.Atoi(str);err==nil{
+
+		}
+	}else if strings.Contains(str,"s"){
+		str = strings.Replace(str,"s","",-1)
+		if num,err:=strconv.Atoi(str);err==nil{
+			if num<100 && num>0 {
+				season = num
+			}
+		}else if str==""{
+
+		}
+	}
+	return -1
+}
+func isEpisode(str string)int{
+	return -1
 }
 func mkdir(){
 
