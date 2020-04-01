@@ -9,23 +9,25 @@ import (
 	"os"
 )
 
-var API_KEY = "fdccdde8"
-var OMDB_API_PATH = "http://www.omdbapi.com/?"
+const api_key = "fdccdde8"
+const omdb_api_path = "http://www.omdbapi.com/?"
 
 type Omdb struct {
 	Title,Year string
-	Response bool
+	//Response bool
 }
 func checkErr(err error) {
-	fmt.Println("error msg: ",err)
-	os.Exit(1)
+	if err!=nil{
+		fmt.Println("error msg: ",err)
+		os.Exit(1)
+	}
 }
 func Get(reqType string,title string) []Omdb {
 
 	fmt.Println("2222222@")
 	URL,params:= setBaseURL()
 	fmt.Println("111111111111")
-	setParams(&params,reqType)
+	setParams(&params,reqType,title)
 
 	URL.RawQuery = params.Encode()
 	fmt.Println(URL.String())
@@ -33,7 +35,7 @@ func Get(reqType string,title string) []Omdb {
 	checkErr(err)
 	bytes := convertResponseToBytes(response)
 
-	fmt.Println(string(bytes))
+	//fmt.Println(string(bytes))
 
 	var result []Omdb
 	switch reqType {
@@ -46,22 +48,21 @@ func Get(reqType string,title string) []Omdb {
 	return result
 }
 func setBaseURL() (*url.URL,url.Values){
-	var URL *url.URL
-	URL, urlErr := url.Parse(OMDB_API_PATH)
-	checkErr(urlErr)
+	URL, err := url.Parse(omdb_api_path)
+	checkErr(err)
 
 	URL.Path += "/"
 	params := url.Values{}
-	params.Add("apiKey", API_KEY)
+	params.Add("apiKey", api_key)
 	return URL,params
 }
-func setParams(params *url.Values,reqType string){
+func setParams(params *url.Values,reqType string,title string){
 	switch reqType{
 	case "search":
-		params.Add("s","friends")
+		params.Add("s",title)
 		params.Add("e","json")
 	case "title":
-		params.Add("t","friends")
+		params.Add("t",title)
 		params.Add("plot","short")
 		params.Add("r","json")
 	}
@@ -73,7 +74,7 @@ func convertResponseToBytes(response *http.Response) []byte{
 func parseTitleResult(response []byte) []Omdb{
 	result := make([]Omdb,1)
 
-	json.Unmarshal(response,&result)
+	json.Unmarshal(response,&result[0])
 	fmt.Println(result[0].Title,result[0].Year)
 
 	return result

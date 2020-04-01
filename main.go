@@ -16,36 +16,31 @@ package main
 
 import (
 	"fmt"
-	"github.com/dhowden/tag"
-	"github.com/remko/go-mkvparse"
-	"log"
-	"os"
-	"sort"
 	"sorter/sortFuncs"
-	"time"
 )
+
 //var a [4]string = {}
 
 //const movieTypes =  []string{""}
-type MyParser struct {
-	currentTagGlobal bool
-	currentTagName   *string
-	currentTagValue  *string
-	title            *string
-	tags             map[string]string
-}
-
-func (p *MyParser) HandleMasterBegin(id mkvparse.ElementID, info mkvparse.ElementInfo) (bool, error) {
-	if id == mkvparse.TagElement {
-		p.currentTagGlobal = true
-	} else if id == mkvparse.SimpleTagElement {
-		p.currentTagName = nil
-		p.currentTagValue = nil
-	}
-	return true, nil
-}
-
-func (p *MyParser) HandleMasterEnd(id mkvparse.ElementID, info mkvparse.ElementInfo) error {
+//type MyParser struct {
+//	currentTagGlobal bool
+//	currentTagName   *string
+//	currentTagValue  *string
+//	title            *string
+//	tags             map[string]string
+//}
+//
+//func (p *MyParser) HandleMasterBegin(id mkvparse.ElementID, info mkvparse.ElementInfo) (bool, error) {
+//	if id == mkvparse.TagElement {
+//		p.currentTagGlobal = true
+//	} else if id == mkvparse.SimpleTagElement {
+//		p.currentTagName = nil
+//		p.currentTagValue = nil
+//	}
+//	return true, nil
+//}
+//
+/*func (p *MyParser) HandleMasterEnd(id mkvparse.ElementID, info mkvparse.ElementInfo) error {
 	if id == mkvparse.SimpleTagElement && p.currentTagGlobal && p.currentTagName != nil && p.currentTagValue != nil {
 		p.tags[*p.currentTagName] = *p.currentTagValue
 	}
@@ -80,7 +75,7 @@ func (p *MyParser) HandleDate(id mkvparse.ElementID, value time.Time, info mkvpa
 
 func (p *MyParser) HandleBinary(id mkvparse.ElementID, value []byte, info mkvparse.ElementInfo) error {
 	return nil
-}
+}*/
 
 func main() {
 	//cmd.Execute()
@@ -117,50 +112,50 @@ func main() {
 
 
 	fmt.Println("maaaaaaaaaaaaaan1")
-	f,_ := os.Open("./012 String Values.mp4")
-	m, err := tag.ReadFrom(f)
-	if err != nil {
+	//f,_ := os.Open("./012 String Values.mp4")
+	//m, err := tag.ReadFrom(f)
+	//if err != nil {
 		//log.Fatal(err)
-		fmt.Println(err)
-		return
-	}
-	log.Print(m.Format()) // The detected format.
-	log.Print(m.Title())  // The title of the track (see Metadata interface for more details).
-	log.Print(m.FileType())  // The title of the track (see Metadata interface for more details).
-	log.Print(m.Disc())  // The title of the track (see Metadata interface for more details).
-	log.Print(m.Comment())  // The title of the track (see Metadata interface for more details).
-	log.Print(m)  // The title of the track (see Metadata interface for more details).
-	fmt.Println("maaaaaaaaaaaaaan")
+		//fmt.Println(err)
+		//return
+	//}
+	//log.Print(m.Format()) // The detected format.
+	//log.Print(m.Title())  // The title of the track (see Metadata interface for more details).
+	//log.Print(m.FileType())  // The title of the track (see Metadata interface for more details).
+	//log.Print(m.Disc())  // The title of the track (see Metadata interface for more details).
+	//log.Print(m.Comment())  // The title of the track (see Metadata interface for more details).
+	//log.Print(m)  // The title of the track (see Metadata interface for more details).
+	//fmt.Println("maaaaaaaaaaaaaan")
 
 	//file, err := os.Open("Friends.S01.E01.480p.mkv")
-	file, err := os.Open("Legend.2015.720p.Farsi.Dubbed.mkv")
-	if err != nil {
-		fmt.Printf("%v", err)
-		os.Exit(-1)
-	}
-	defer file.Close()
-	handler := MyParser{
-		tags: make(map[string]string),
-	}
-	err = mkvparse.ParseSections(file, &handler, mkvparse.InfoElement, mkvparse.TagsElement)
-	if err != nil {
-		fmt.Printf("%v", err)
-		os.Exit(-1)
-	}
+	//file, err := os.Open("Legend.2015.720p.Farsi.Dubbed.mkv")
+	//if err != nil {
+	//	fmt.Printf("%v", err)
+	//	os.Exit(-1)
+	//}
+	//defer file.Close()
+	//handler := MyParser{
+	//	tags: make(map[string]string),
+	//}
+	//err = mkvparse.ParseSections(file, &handler, mkvparse.InfoElement, mkvparse.TagsElement)
+	//if err != nil {
+	//	fmt.Printf("%v", err)
+	//	os.Exit(-1)
+	//}
 
 	// Print (sorted) tags
-	if handler.title != nil {
-		fmt.Printf("- title: %q\n", *handler.title)
-	}
-	fmt.Println("wtf?")
-	var tagNames []string
-	for tagName := range handler.tags {
-		tagNames = append(tagNames, tagName)
-	}
-	sort.Strings(tagNames)
-	for _, tagName := range tagNames {
-		fmt.Printf("- %s: %q\n", tagName, handler.tags[tagName])
-	}
+	//if handler.title != nil {
+	//	fmt.Printf("- title: %q\n", *handler.title)
+	//}
+	//fmt.Println("wtf?")
+	//var tagNames []string
+	//for tagName := range handler.tags {
+	//	tagNames = append(tagNames, tagName)
+	//}
+	//sort.Strings(tagNames)
+	//for _, tagName := range tagNames {
+	//	fmt.Printf("- %s: %q\n", tagName, handler.tags[tagName])
+	//}
 	//------------------------------------------------------
 	/*file, err := os.Open("Friends.S01.E01.480p.mkv")
 	if err != nil {
