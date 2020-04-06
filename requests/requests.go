@@ -3,10 +3,12 @@ package requests
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 )
 
 const api_key = "fdccdde8"
@@ -29,7 +31,8 @@ type Omdb struct {
 	Metascore string
 	Type string
 	ImdbID string
-	Response bool `json:"Response,bool"`
+
+	Response bool
 }
 func checkErr(err error) {
 	if err!=nil{
@@ -49,7 +52,7 @@ func Get(reqType string,title string) []Omdb {
 	response, err := http.Get(URL.String())
 	checkErr(err)
 	bytes := convertResponseToBytes(response)
-
+	defer response.Body.Close()
 	//fmt.Println(string(bytes))
 
 	//fmt.Println(string(bytes))
@@ -118,4 +121,31 @@ func parseSearchResult(response []byte) []Omdb  {
 		result[index].Response = true
 	}
 	return result
+}
+func DownloadFile(URL, path, fileName string) error {
+	fileURL,_:=url.Parse(URL)
+	parts := strings.Split(fileURL.Path,"/")
+	lastPartOfURL:=strings.Split(parts[len(parts)-1],".")
+	suffix := lastPartOfURL[len(lastPartOfURL)-1]
+
+	response, err := http.Get(URL)
+	if err != nil {
+		return nil
+	}
+	defer response.Body.Close()
+
+	file, err := os.Create(path+"/"+fileName+"."+suffix)
+
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	//Write the bytes to the fiel
+	_, err = io.Copy(file, response.Body)
+	if err != nil {
+		return err
+	}
+	return nil
 }
