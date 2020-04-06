@@ -13,8 +13,23 @@ const api_key = "fdccdde8"
 const omdb_api_path = "http://www.omdbapi.com/?"
 
 type Omdb struct {
-	Title,Year string
-	//Response bool
+	Title string
+	Year string
+	Episode string
+	Season string
+	Genre string
+	Writer string
+	Actors string
+	Plot string
+	Language string
+	Country string
+	Awards string
+	Poster string
+	ImdbRating string
+	Metascore string
+	Type string
+	ImdbID string
+	Response bool `json:"Response,bool"`
 }
 func checkErr(err error) {
 	if err!=nil{
@@ -24,9 +39,9 @@ func checkErr(err error) {
 }
 func Get(reqType string,title string) []Omdb {
 
-	fmt.Println("2222222@")
+	//fmt.Println("2222222@")
 	URL,params:= setBaseURL()
-	fmt.Println("111111111111")
+	//fmt.Println("111111111111")
 	setParams(&params,reqType,title)
 
 	URL.RawQuery = params.Encode()
@@ -34,6 +49,8 @@ func Get(reqType string,title string) []Omdb {
 	response, err := http.Get(URL.String())
 	checkErr(err)
 	bytes := convertResponseToBytes(response)
+
+	//fmt.Println(string(bytes))
 
 	//fmt.Println(string(bytes))
 
@@ -75,13 +92,16 @@ func parseTitleResult(response []byte) []Omdb{
 	result := make([]Omdb,1)
 
 	json.Unmarshal(response,&result[0])
-	fmt.Println(result[0].Title,result[0].Year)
+	if result[0].Title!=""{
+		result[0].Response=true
+	}
+	//fmt.Println("[*********]",result)
+	fmt.Println("[33333]",result[0].Response,result[0].Season)
 
 	return result
 }
 func parseSearchResult(response []byte) []Omdb  {
 	var searchJson map[string][]interface{}
-
 	json.Unmarshal(response, &searchJson)
 	searchRes := searchJson["Search"]
 
@@ -92,6 +112,10 @@ func parseSearchResult(response []byte) []Omdb  {
 
 		result[index].Title = fmt.Sprintf("%v",videoData["Title"])
 		result[index].Year = fmt.Sprintf("%v",videoData["Year"])
+		result[index].ImdbID = fmt.Sprintf("%v",videoData["imdbID"])
+		result[index].Type = fmt.Sprintf("%v",videoData["Type"])
+		result[index].Poster = fmt.Sprintf("%v",videoData["Poster"])
+		result[index].Response = true
 	}
 	return result
 }

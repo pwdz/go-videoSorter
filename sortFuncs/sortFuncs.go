@@ -2,35 +2,30 @@ package sortFuncs
 
 import (
 	"fmt"
+	"sorter/requests"
+
 	//"golang.org/x/text/search"
 
 	//"gopkg.in/ini.v1"
 	"log"
 	"os"
 	"path/filepath"
-	// "sorter/requests"
 	"strconv"
 	"strings"
 )
-var videoFormats = []string{"mp4","mkv","avi","m4v","m4p","mov","qt","ogg","wmv","mpg","mpv","webm"}
+var videoFormats = []string{"mp4","mkv","avi","m4v","m4p","mov","qt","ogg","wmv","mpg","mpv","webm","sub","srt"}
 var unwantedString = []string{"720","1080","480","dvd","twoddl"}
 var sYear,lYear = 1920,2200
+var isOnline=true
 type video struct{
 	Name string
 	Year,Episode,Season int
 }
 func SortVideo()  {
-	err := filepath.Walk("D:/M&S",processPath)
+	err := filepath.Walk("./",processPath)
 	if err != nil {
 		log.Println(err)
 	}
-
-	//fmt.Println("3333333333333333333333333333333333")
-	//requests.
-	//fmt.Println()
-	//for _,value:= range requests.Get("title","friends"){
-	//	fmt.Println(value)
-	//}
 }
 
 func processPath(path string, info os.FileInfo, err error) error {
@@ -38,10 +33,6 @@ func processPath(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}
-
-	//buf, _ := ioutil.ReadFile(path)
-
-	//if(filetype.IsVideo(buf)){
 	for _,vFormat := range videoFormats{
 		if strings.HasSuffix(strings.ToLower(info.Name()),vFormat) {
 			fmt.Println("\n********************************************")
@@ -53,24 +44,20 @@ func processPath(path string, info os.FileInfo, err error) error {
 			videoName = strings.Replace(videoName,"("," ",-1)
 			videoName = strings.Replace(videoName,"   "," ",-1)
 			videoName = strings.Replace(videoName,"  "," ",-1)
-			//mkdir()
-			// fmt.Println(videoName)
-			video := findVideo(videoName)
-			mkdir(video)
-			//parts := strings.Split(videoName," ")
-			//fmt.Println(parts)
+			video := extractVideoData(videoName)
+			newPath := mkdir(video)
+			mvFile(newPath,path)
 			break
 		}
 	}
-	//}
 	return nil
 }
-func findVideo(videoName string)video{
+func extractVideoData(videoName string)requests.Omdb{
 	var v video
 	parts := strings.Split(strings.Trim(videoName," ")," ")
 
 
-	printSlice(parts)
+	//printSlice(parts)
 	v.Name=""
 	v.Year=-1
 	v.Season = 0
@@ -85,33 +72,20 @@ func findVideo(videoName string)video{
 					v.Name += val+ " "
 				}else{
 					if(setSeasonEpisode(seas,ep,&v.Season,&v.Episode)){
-
-						// fmt.Println("palang malang before",index)
 						index=lastIndex
-						// fmt.Println("palang malang after",index)
 					}
 					flag=isNameEmpty(v.Name)
 				}
 			} else {
-				//fmt.Println("num bede aqa",num,"|name:"+name+"|")
 				if v.Name == "" {
-					//fmt.Println("0_____0")
 					v.Name += strconv.Itoa(num)+" "
 				} else if isYear(num) {
-					//fmt.Println("akhe :|",num)
 					v.Year = num
 					flag=isNameEmpty(v.Name)
 				} else {
-					//fmt.Println("dafaq? in azonas :|--------------------------")
 					seas,ep,num,lastIndex:=isSeasonAndEpisode(val,index,parts)
 					if !setSeasonEpisode(seas,ep,&v.Season,&v.Episode){
 						v.Name += strconv.Itoa(num)+" "
-
-
-						// fmt.Println("palang malang before",index)
-
-
-						// fmt.Println("palang malang afte",index)
 					}else{
 
 						index=lastIndex
@@ -124,50 +98,49 @@ func findVideo(videoName string)video{
 		}
 	}
 	fmt.Println("name:|"+strings.Trim(v.Name," ")+"|year",v.Year,"|v.Season:",v.Season,"|v.Episode:",v.Episode)
-	// fmt.Println(requests.Get("title",strings.Trim(name," ")))
-	return v
+	var res requests.Omdb
+	res.Response=false
+	if isOnline{
+		onlineSearch(v,&res)
+	}
+	setOmdbValues(v,&res)
+	return res
 }
-/*
-func a(result []requests.Omdb,parts []string,startIndex int){
-	maxCount :=0
-	counter := 0
-	for _,res := range  result{
-		for i:=startIndex;i<len(parts);i++{
-			if !isValid(parts[i]){
-				continue
-			}
-			fmt.Println("[]:","|"+res.Title,"|"+parts[i])
-			if strings.Contains(res.Title,parts[i]){
-				counter++
-			}else {
-				if maxCount<counter{
-					maxCount = counter
-				}
-				break
-			}
-		}
-		if counter>maxCount{
-			maxCount = counter
-		}
-		counter=0
+func onlineSearch(video video,result *requests.Omdb){
+	for _,value := range requests.Get("title",strings.Trim(video.Name," ")){
+		//fmt.Println("%_%_%_%_%_%_%",value)
+		*result = value
 	}
-	fmt.Println(maxCount)
-}*/
+}
+func setOmdbValues(v video,res *requests.Omdb){
+	if v.Season>0{
+		res.Type = "series"
+		res.Season = strconv.Itoa(v.Season)
+		res.Episode = strconv.Itoa(v.Episode)
+	}
+	if !res.Response {
+		res.Title = v.Name
+		if isYear(v.Year) {
+			res.Year = strconv.Itoa(v.Year)
+		} else {
+			res.Type = "movie"
+		}
+	}
+
+	fmt.Println("in Checktype:",res.Season,v.Season)
+}
 func printSlice(sss []string){
-	// fmt.Println("******************BEGIN*********************")
+	fmt.Println("******************BEGIN*********************")
 	for _,v:=range sss{
-
 		if isValid(v){
-			// fmt.Println("|"+v+"|")
-
+			fmt.Println("|"+v+"|")
 		}else{
-			//fmt.Println("sssssssssssssssS")
+			fmt.Println("invalid part")
 		}
 	}
-	// fmt.Println("********************END**********************")
+	fmt.Println("********************END**********************")
 }
 func isNameEmpty(name string)bool{
-	//fmt.Println("^_^",name)
 	if name=="" {
 		return true
 	}
@@ -204,7 +177,6 @@ func isSeasonAndEpisode(str string,strIndex int,parts []string)(int,int,int,int)
 	episode:=0
 	nameNum:=-1
 	lastIndex:=strIndex
-	// fmt.Println("in season function:",str)
 	if strings.Contains(str,"season"){
 		str = strings.Replace(str,"season","",-1)
 		if s,err:=strconv.Atoi(str);err==nil{
@@ -218,19 +190,14 @@ func isSeasonAndEpisode(str string,strIndex int,parts []string)(int,int,int,int)
 		}
 	}else if strings.Contains(str,"s"){
 		str = strings.Replace(str,"s","",-1)
-		//fmt.Println("in replace s:",str)
 		var index int
 		var ch int32
 		for index,ch = range str{
-			//fmt.Printf("%T",ch)
-			//fmt.Println("in for:|",ch,string(ch))
 			if s,err:=strconv.Atoi(string(ch));err==nil{
-				//fmt.Println("in convert:",s,season)
 				season*=10
 				season+=s
 			}else {
 				if index==strings.Index(str,"e"){
-					//fmt.Println("E dar:",str)
 					episode,lastIndex = isEpisode(parts,strIndex)
 				}
 				break
@@ -266,19 +233,15 @@ func isSeasonAndEpisode(str string,strIndex int,parts []string)(int,int,int,int)
 
 		}
 	}
-	//fmt.Println("in season func:",season,episode)
 	return season,episode,nameNum,lastIndex
 }
 func isEpisode(parts []string,epIndex int)(int,int){//episode,lastIndex
-	// fmt.Println(epIndex,len(parts))
 	if epIndex>=len(parts)-1{
 		return 0,epIndex
 	}
 	episode := 0
 	lastIndex:=epIndex
-	// fmt.Println("EPPPPPP2222222222222")
 	str := strings.ToLower(parts[epIndex])
-	// fmt.Println("EPPPPPP",str)
 	if strings.Contains(str,"episode"){
 		str = strings.Replace(str,"episode","",-1)
 		if ep,err:=strconv.Atoi(str);err==nil{
@@ -303,13 +266,10 @@ func isEpisode(parts []string,epIndex int)(int,int){//episode,lastIndex
 				}
 			}
 			if episode == 0 {
-				//fmt.Println("@!@!@!@!@!@!@!@!@!@!@@",str)
 				if epIndex+1 < len(parts) {
-					// fmt.Println("@########################",parts[epIndex+1])
 					if ep, err := strconv.Atoi(parts[epIndex+1]); err == nil {
 						lastIndex = epIndex+1
 						episode = ep
-						//fmt.Println("$$$$$$$$$$$$$$$$$$",episode,ep)
 					}
 				}
 			}
@@ -326,6 +286,38 @@ func setSeasonEpisode(seas int,ep int,season *int,episode  *int)bool{
 	}
 	return false
 }
-func mkdir(v video){
-	
+func mkdir(v requests.Omdb)string{
+	var newPath string
+	//fmt.Println("in Mkdir:",v)
+	if v.Type=="movie"{//it's a movie
+		newPath = "./pwdSorter/Movies/"+v.Title
+		if v.Response {
+			newPath +=" ("+v.Year+")"
+			newPath +=" IMDB("+v.ImdbRating+")"
+		}else if isYear(isNumber(v.Year)){
+			newPath += " ("+v.Year+")"
+		}
+	}else{//it's a serie
+		newPath = "./pwdSorter/Series/"+v.Title+"$YEARIMDB/Season"+v.Season+ "/E"+v.Episode
+		fmt.Println("_---------------------------",v.Season)
+		if v.Response{
+			newPath = strings.Replace(newPath,"$YEARIMDB","("+v.Year+")"+" IMDB("+v.ImdbRating+")",-1)
+		}else if isYear(isNumber(v.Year)){
+			newPath = strings.Replace(newPath,"$YEARIMDB","("+v.Year+")",-1)
+		}else {
+			newPath = strings.Replace(newPath,"$YEARIMDB","",-1)
+		}
+	}
+	os.MkdirAll(newPath,0755)
+	return newPath
+}
+func mvFile(newPath string,oldPath string){
+	parts:=strings.Split(oldPath,"/")
+	newPath+= "/"+parts[len(parts)-1]
+	fmt.Println("newPath",newPath)
+	err :=  os.Rename(oldPath, newPath)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
