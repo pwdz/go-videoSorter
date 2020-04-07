@@ -41,10 +41,7 @@ func checkErr(err error) {
 	}
 }
 func Get(reqType string,title string) []Omdb {
-
-	//fmt.Println("2222222@")
 	URL,params:= setBaseURL()
-	//fmt.Println("111111111111")
 	setParams(&params,reqType,title)
 
 	URL.RawQuery = params.Encode()
@@ -53,9 +50,6 @@ func Get(reqType string,title string) []Omdb {
 	checkErr(err)
 	bytes := convertResponseToBytes(response)
 	defer response.Body.Close()
-	//fmt.Println(string(bytes))
-
-	//fmt.Println(string(bytes))
 
 	var result []Omdb
 	switch reqType {
@@ -98,7 +92,6 @@ func parseTitleResult(response []byte) []Omdb{
 	if result[0].Title!=""{
 		result[0].Response=true
 	}
-	//fmt.Println("[*********]",result)
 	fmt.Println("[33333]",result[0].Response,result[0].Season)
 
 	return result
@@ -142,7 +135,6 @@ func DownloadFile(URL, path, fileName string) error {
 
 	defer file.Close()
 
-	//Write the bytes to the fiel
 	_, err = io.Copy(file, response.Body)
 	if err != nil {
 		return err

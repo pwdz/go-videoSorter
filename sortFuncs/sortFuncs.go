@@ -3,10 +3,6 @@ package sortFuncs
 import (
 	"fmt"
 	"sorter/requests"
-
-	//"golang.org/x/text/search"
-
-	//"gopkg.in/ini.v1"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,10 +20,10 @@ type video struct{
 	Name string
 	Year,Episode,Season int
 }
-func SortVideo(isOnlineSort,shouldDownloadImg bool) {
+func SortVideo(isOnlineSort,shouldDownloadImg bool,sourcePath,desPath string) {
 	isOnline = isOnlineSort
 	shouldDlImg = shouldDownloadImg
-	err := filepath.Walk("./",processPath)
+	err := filepath.Walk(sourcePath,processPath)
 	if err != nil {
 		log.Println(err)
 	}
@@ -53,7 +49,7 @@ func processPath(path string, info os.FileInfo, err error) error {
 			newPath := mkdir(video)
 			mvFile(newPath,path)
 			if isOnline{
-				if fileExists(strings.Split(newPath,"Season")[0]+video.Title+".jpg"){
+				if !fileExists(strings.Split(newPath,"Season")[0]+video.Title+".txt") {
 					createInfoFile(newPath,video)
 				}
 			}
@@ -350,6 +346,9 @@ func createInfoFile(path string,info requests.Omdb){
 		file,err := os.Create(path+"/"+info.Title+".txt")
 		if err==nil{
 			defer file.Close()
+			file.WriteString("by PWDZ\n")
+			file.WriteString("https://github.com/pwdz\n")
+			file.WriteString("\n============O_o============\n")
 			file.WriteString("Title: "+info.Title+"\n")
 			file.WriteString("Year: "+info.Year+"\n")
 			file.WriteString("IMDB: "+info.ImdbRating+"\n")
@@ -363,6 +362,7 @@ func createInfoFile(path string,info requests.Omdb){
 			file.WriteString("Awards: "+info.Awards+"\n")
 			file.WriteString("Poster: "+info.Poster+"\n")
 			file.WriteString("Country: "+info.Country+"\n")
+			file.WriteString("============o_O============\n")
 		}
 
 	}
@@ -374,5 +374,3 @@ func fileExists(path string)bool{
 		return false
 	}
 }
-
-

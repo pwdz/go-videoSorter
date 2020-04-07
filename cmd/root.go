@@ -27,14 +27,14 @@ var cfgFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "sorter",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:   "pwdz",
+	Short: "pwdz is a CLI app having some functionalities for dealing with movies and series",
+	Long: `pwdz CLI app has multiple use:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+- Sorting movies and series existing in a parent directory and subdirectories into ordered directories
+- Downloading Movies/Series Poster or downloading any image from a certain URL
+- Creating a text file which contains some information about the serie/movie nicluding IMDB rating,Actors, etc.
+- Searching for a movie/serie information using the whole or part of the movie/serie title`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -51,7 +51,6 @@ func Execute() {
 
 func init() { 
 	cobra.OnInitialize(initConfig)
-
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
