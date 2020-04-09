@@ -29,15 +29,15 @@ var cfgFile string
 var RootCmd = &cobra.Command{
 	Use:   "pwdz",
 	Short: "pwdz is a CLI app having some functionalities for dealing with movies and series",
-	Long: `pwdz CLI app has multiple use:
+	Long: `pwdz is a CLI app having multiple use:
 
 - Sorting movies and series existing in a parent directory and subdirectories into ordered directories
+	sort sourceDirectory [destinationDir] [--createTxt/-c][--dlImage/-d]
 - Downloading Movies/Series Poster or downloading any image from a certain URL
-- Creating a text file which contains some information about the serie/movie nicluding IMDB rating,Actors, etc.
-- Searching for a movie/serie information using the whole or part of the movie/serie title`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	download [URL]/[videoName --movie/-m] destionationDir
+- Searching for a movie/serie information using the whole or part of the movie/serie title
+	search videoName [destinationDir]
+`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

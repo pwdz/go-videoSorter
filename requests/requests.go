@@ -45,13 +45,17 @@ func Get(reqType string,title string) []Omdb {
 	setParams(&params,reqType,title)
 
 	URL.RawQuery = params.Encode()
+
 	fmt.Println(URL.String())
+	fmt.Println("Calling OMDB API...")
+
 	response, err := http.Get(URL.String())
 	checkErr(err)
 	bytes := convertResponseToBytes(response)
 	defer response.Body.Close()
 
 	var result []Omdb
+	fmt.Println("Parsing reponse...")
 	switch reqType {
 	case "search":
 		result = parseSearchResult(bytes)
@@ -92,8 +96,6 @@ func parseTitleResult(response []byte) []Omdb{
 	if result[0].Title!=""{
 		result[0].Response=true
 	}
-	fmt.Println("[33333]",result[0].Response,result[0].Season)
-
 	return result
 }
 func parseSearchResult(response []byte) []Omdb  {
@@ -115,29 +117,42 @@ func parseSearchResult(response []byte) []Omdb  {
 	}
 	return result
 }
-func DownloadFile(URL, path, fileName string) error {
-	fileURL,_:=url.Parse(URL)
+func DownloadFile(URL string,path ...string) error {
+	checkErr := func(err error){
+		if err!=nil{
+			fmt.Println("Download failed! :(")
+			fmt.Println(err)
+			os.Exit(2)
+		}
+	}
+
+	if _, err := os.Stat(path[0]); os.IsNotExist(err) {
+		os.MkdirAll(path[0],0755)
+	}
+		fileURL,_:=url.Parse(URL)
 	parts := strings.Split(fileURL.Path,"/")
 	lastPartOfURL:=strings.Split(parts[len(parts)-1],".")
 	suffix := lastPartOfURL[len(lastPartOfURL)-1]
-
-	response, err := http.Get(URL)
-	if err != nil {
-		return nil
+	var fileName string
+	if len(path)>1{
+		fileName=path[1]
+	}else{
+		fileName = strings.TrimSuffix(parts[len(parts)-1],"."+suffix)
 	}
+
+	fmt.Println("Downloading",fileName+"."+suffix)
+	response, err := http.Get(URL)
+	checkErr(err)
 	defer response.Body.Close()
 
-	file, err := os.Create(path+"/"+fileName+"."+suffix)
-
-	if err != nil {
-		return err
-	}
+	file, err := os.Create(path[0]+"/"+fileName+"."+suffix)
+	checkErr(err)
 
 	defer file.Close()
 
 	_, err = io.Copy(file, response.Body)
-	if err != nil {
-		return err
-	}
+	checkErr(err)
+
+	fmt.Println("Download completed!")
 	return nil
 }

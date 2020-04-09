@@ -1,30 +1,24 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
-	flag "github.com/spf13/pflag"
 	"sorter/sortFuncs"
 )
 
 var createTextFile,downloadImg bool
 func init() {
 	RootCmd.AddCommand(sortVideos)
-	flag.BoolVarP(&createTextFile, "createTxt", "c", false, "For each movie/serie creates a text file containing information aboud it")
-	flag.BoolVarP(&downloadImg, "dlImage", "d", false, "For each movie/serie downloads the poster of it")
-	flag.Parse()
-	fmt.Println("kire khar",createTextFile,downloadImg)
+	sortVideos.Flags().BoolVarP(&createTextFile, "createTxt", "c", false, "For each movie/serie creates a text file containing information aboud it")
+	sortVideos.Flags().BoolVarP(&downloadImg, "dlImage", "d", false, "For each movie/serie downloads the poster of it")
+
 }
 var sortVideos = &cobra.Command{
 	Use:   "sort",
-	Short: "sort sort sort",
-	Long:  `All software has versions. This is Hugo's`,
+	Short: "sorting all the series/movies existing in a parent directory",
+	Long:  `sort all the series/movies exitsting in a parent directory into
+			ordered directories based on video names`,
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args,createTextFile)
-		if len(args)>=1{
-			sortFuncs.SortVideo(createTextFile,downloadImg,args[0],args[1])
-		}else {
-			fmt.Println("Source path is not given!")
-		}
+		sortFuncs.SortVideo(createTextFile,downloadImg,args)
 	},
 }
