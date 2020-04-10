@@ -14,13 +14,13 @@
 package main
 
 import (
-	"go-videoSorter/sortFuncs"
+	"go-videoSorter/cmd"
 )
 func main() {
 	//fmt.Println("here u go:")
-	var temp = make([]string, 1)
-	temp[0] = "D:/M&S"
-	sortFuncs.SortVideo(false, false, temp)
+	// var temp = make([]string, 1)
+	// temp[0] = "D:/M&S/"
+	// sortFuncs.SortVideo(false, false, temp)
 	//fmt.Println("end")
-	// cmd.Execute()
+	cmd.Execute()
 }
