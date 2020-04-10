@@ -17,10 +17,10 @@ can download posters and create text files containing information aboud movies/s
  Hence I turned to videoNames for sorting.  
 ## Installation
 ## Sort
-NOT COMPLETELY SAFE YET(in almost 200 samples of videos, I found 8 videos with misordered foldering)  
 sort command, sorts all the videos existing in the given **source directory** and all of its **subdirectories**
 base on the video **title** and **if series**, also **seasons** and **episodes**.  
 It works based on **video names**, so in case of irrelevant video naming, sorting series might not work properly.  
+so it is NOT completely safe yet(in almost 200 samples of videos, I found 8 videos with misordered foldering)  
 
 The **sort result**, if destinationDir given, will be in ```destionationDir/GoVideoSort/``` if not, will be in ```sourceDir/GoVideoSort/```.    
 
