@@ -180,7 +180,6 @@ func setOmdbValues(v Video,res *requests.Omdb){
 	}
 }
 func PrintVideoInfo(videos []requests.Omdb){
-	fmt.Println("by PWDZ")
 	fmt.Println("https://github.com/pwdz")
 	fmt.Println("============O_o============")
 	if (len(videos)==0 || (len(videos)>0 && !videos[0].Response)){
@@ -354,7 +353,7 @@ func setSeasonEpisode(seas int,ep int,season *int,episode  *int)bool{
 func mkdir(v requests.Omdb,basePath...string)(string,string){
 	var newFullPath,newBasePath string
 	if v.Type=="movie"{//it's a movie
-		newFullPath = desDir+"pwdSorter/Movies/"+strings.Trim(v.Title," ")
+		newFullPath = desDir+"SortResult/Movies/"+strings.Trim(v.Title," ")
 		if isYear(isNumber(v.Year)){
 			newFullPath += " ("+v.Year+")"
 		}

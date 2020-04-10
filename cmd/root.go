@@ -27,14 +27,14 @@ var cfgFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "pwdz",
-	Short: "pwdz is a CLI app having some functionalities for dealing with movies and series",
-	Long: `pwdz is a CLI app having multiple use:
+	Use:   "govideo",
+	Short: "govideo is a CLI app having some functionalities for dealing with movies and series",
+	Long: `govideo is a CLI app having multiple use:
 
 - Sorting movies and series existing in a parent directory and subdirectories into ordered directories
 	sort sourceDirectory [destinationDir] [--createTxt/-c][--dlImage/-d]
 - Downloading Movies/Series Poster or downloading any image from a certain URL
-	download [URL]/[videoName --movie/-m] destionationDir
+	download destionationDir [URL]/[videoName --video/-v] 
 - Searching for a movie/serie information using the whole or part of the movie/serie title
 	search videoName [destinationDir]
 `,
