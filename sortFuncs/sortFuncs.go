@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	videoFormats      = []string{"mp4", "mkv", "avi", "m4v", "m4p", "mov", "qt", "wmv", "mpg", "mpv", "webm", "sub", "srt"}
+	videoFormats      = []string{"mp4", "mkv", "avi", "m4v", "m4p", "mov", "qt", "wmv", "mpg", "mpv", "webm", /*"sub", "srt"*/}
 	unwantedString    = []string{"720", "1080", "480", "dvd", "twoddl"}
 	sYear, lYear      = 1920, 2200
 	isOnline          = false

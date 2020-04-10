@@ -17,6 +17,7 @@ can download posters and create text files containing information aboud movies/s
  Hence I turned to videoNames for sorting.  
 ## Installation
 ## Sort
+NOT SAFE YET  
 sort command, sorts all the videos existing in the given **source directory** and all of its **subdirectories**
 base on the video **title** and **if series**, also **seasons** and **episodes**.  
 It works based on **video names**, so in case of irrelevant video naming, sorting series might not work properly.  
