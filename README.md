@@ -19,7 +19,7 @@ can download posters and create text files containing information aboud movies/s
 ## Sort
 sort command, sorts all the videos existing in the given **source directory** and all of its **subdirectories**
 base on the video **title** and **if series**, also **seasons** and **episodes**.  
-It works based on the **name of videos**, so in case of irrelevant video namings, sorting series might not work properly.  
+It works based on **video names**, so in case of irrelevant video naming, sorting series might not work properly.  
 
 The **sort result**, if destinationDir given, will be in ```destionationDir/GoVideoSort/``` if not, will be in ```sourceDir/GoVideoSort/```.    
 
