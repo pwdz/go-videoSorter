@@ -15,7 +15,7 @@ can download posters and create text files containing information aboud movies/s
  
  At first I wanted to sort videos based on each video's **metadata**. But it could take quite a while since reading each file could take a second or two. Also in some cases, metadatas didn't contain usful information such as title of the video which is the base resource for sorting.  
  Hence I turned to videoNames for sorting.  
-##Installation
+## Installation
 ## Sort
 sort command, sorts all the videos existing in the given **source directory** and all of its **subdirectories**
 base on the video **title** and **if series**, also **seasons** and **episodes**.  
@@ -23,9 +23,10 @@ It works based on the **name of videos**, so in case of irrelevant video namings
 
 The **sort result**, if destinationDir given, will be in ```destionationDir/GoVideoSort/``` if not, will be in ```sourceDir/GoVideoSort/```.    
 
-sort command has the following **optional** flags:  
-***--dlImage/-d*** Downloads **poster** of each go-videoSorter automatically while sorting and places it under the folder of the sorted video.  
-***--createTxt/-c***  Creates a text file which has information about the go-videoSorter.    
+sort command has the following **optional** flags:    
+
+`--dlImage/-d` Downloads **poster** of each go-videoSorter automatically while sorting and places it under the folder of the sorted video.  
+`--createTxt/-c`  Creates a text file which has information about the go-videoSorter.    
 
 An example of directory tree before and after sort using both flags.  
 Before sort:
