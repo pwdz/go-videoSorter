@@ -107,8 +107,8 @@ download command usage:
 govideo download destinationDir [videoName --video/-v]/[URL]
 ```
 ### Searching for Information
-search command finds the info of the given videoName and prints the results. If giving destionation, besides printing result, text files of the result will be created under destionationDir.  
-If using --search/-s, it will search for all the movies and series that contain the given videoName.  
+search command finds the info of the given **videoName** and prints the results. If destinationDir given, besides printing results, **text files** of the results will be created under destionationDir.  
+If using `--search/-s`, it will search for all the movies and series that contain the given videoName.  
 
 search result will be just like the 1917.txt example above.  
 
