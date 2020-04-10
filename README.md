@@ -72,10 +72,10 @@ destinationDir
             ...
 ```
 
- For example for movie 1917, using --dlImage/-d will place 1917.jpg under `1917/` folder:  
+ For example for movie 1917, using `--dlImage/-d` will place 1917.jpg under `1917/` folder:  
 ![1917](./1917.jpg?raw=true)
 
-Also using --createTxt/-c will place 1917.txt by this format under `1917/`
+Also using `--createTxt/-c` will place 1917.txt by this format under `1917/`
 ```
 https://github.com/pwdz 
 ============O_o============
