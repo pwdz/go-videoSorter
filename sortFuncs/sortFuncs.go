@@ -353,7 +353,7 @@ func setSeasonEpisode(seas int,ep int,season *int,episode  *int)bool{
 func mkdir(v requests.Omdb,basePath...string)(string,string){
 	var newFullPath,newBasePath string
 	if v.Type=="movie"{//it's a movie
-		newFullPath = desDir+"SortResult/Movies/"+strings.Trim(v.Title," ")
+		newFullPath = desDir+"GoVideoSort/Movies/"+strings.Trim(v.Title," ")
 		if isYear(isNumber(v.Year)){
 			newFullPath += " ("+v.Year+")"
 		}
@@ -362,7 +362,7 @@ func mkdir(v requests.Omdb,basePath...string)(string,string){
 		if len(basePath)>0{
 			newBasePath = basePath[0]
 		}else {
-			newBasePath = desDir + "pwdSorter/Series/" + strings.Trim(v.Title," ")+ "$YEAR"
+			newBasePath = desDir + "GoVideoSort/Series/" + strings.Trim(v.Title," ")+ "$YEAR"
 			if isYear(isNumber(v.Year)){
 				newBasePath = strings.Replace(newBasePath,"$YEAR","("+v.Year+")",-1)
 			}else {
