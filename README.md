@@ -73,7 +73,7 @@ destinationDir
 ```
 
  For example for movie 1917, using `--dlImage/-d` will place 1917.jpg under `1917/` folder:  
-![1917](./1917.jpg?raw=true)
+![1917](https://raw.githubusercontent.com/pwdz/go-videoSorter/img/1917.jpg)
 
 Also using `--createTxt/-c` will place 1917.txt by this format under `1917/`
 ```
