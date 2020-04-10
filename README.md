@@ -1,4 +1,5 @@
 #go-videoSorter
+
 go-videoSorter is a CLI applications for **sorting**, **downloading posters** and **gathering information** about movies/series.
 ##Contents
 [Overview](#overview)  
