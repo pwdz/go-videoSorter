@@ -91,7 +91,9 @@ func processPath(path string, info os.FileInfo, err error) error {
 					if video.Type == "series" {
 						newPath = strings.Split(newPath, "Season")[0]
 					}
-					requests.DownloadFile(video.Poster, newPath, video.Title)
+					if video.Response{
+						requests.DownloadFile(video.Poster, newPath, video.Title)
+					}
 				}
 			}
 			fmt.Println("Done.")
@@ -154,7 +156,7 @@ func extractVideoData(videoName string) requests.Omdb {
 			flag = isNameEmpty(v.Name)
 		}
 	}
-	//fmt.Println("name:|"+strings.Trim(v.Name," ")+"|year",v.Year,"|v.Season:",v.Season,"|v.Episode:",v.Episode,"|type:")
+	// fmt.Println("name:|"+strings.Trim(v.Name," ")+"|year",v.Year,"|v.Season:",v.Season,"|v.Episode:",v.Episode,"|type:")
 	var res requests.Omdb
 	res.Response = false
 	if isOnline {

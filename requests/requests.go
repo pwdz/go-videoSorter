@@ -118,12 +118,14 @@ func parseSearchResult(response []byte) []Omdb  {
 	return result
 }
 func DownloadFile(URL string,path ...string) error {
-	checkErr := func(err error){
+	checkErr := func(err error)bool{
 		if err!=nil{
 			fmt.Println("Download failed! :(")
 			fmt.Println(err)
-			os.Exit(2)
+			// os.Exit(2)
+			return false
 		}
+		return true
 	}
 
 	if _, err := os.Stat(path[0]); os.IsNotExist(err) {
@@ -142,16 +144,22 @@ func DownloadFile(URL string,path ...string) error {
 
 	fmt.Println("Downloading",fileName+"."+suffix)
 	response, err := http.Get(URL)
-	checkErr(err)
+	if !checkErr(err){
+		return err
+	}
 	defer response.Body.Close()
 
 	file, err := os.Create(path[0]+"/"+fileName+"."+suffix)
-	checkErr(err)
+	if !checkErr(err){
+		return err
+	}
 
 	defer file.Close()
 
 	_, err = io.Copy(file, response.Body)
-	checkErr(err)
+	if checkErr(err){
+		return err
+	}
 
 	fmt.Println("Download completed!")
 	return nil
