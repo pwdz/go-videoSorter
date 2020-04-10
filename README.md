@@ -6,7 +6,7 @@ go-videoSorter is a CLI applications for **sorting**, **downloading posters** an
 [Installation](#installation)  
 [Sort](#sort)  
 [Download Image](#download-image)  
-[Search](#searching-for-information)
+[Searching for Information](#searching-for-information)
 ## Overview
 
 go-videoSorter is written using [Cobra](https://github.com/spf13/cobra) library and uses [OMDB](http://www.omdbapi.com/) API in order to fetch data about movies/series and 
