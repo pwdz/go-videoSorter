@@ -1,13 +1,13 @@
-#go-videoSorter
+# go-videoSorter
 
 go-videoSorter is a CLI applications for **sorting**, **downloading posters** and **gathering information** about movies/series.
-##Contents
+## Contents
 [Overview](#overview)  
 [Installation](#installation)  
 [Sort](#sort)  
 [Download Image](#download-image)  
 [Search](#searching-for-information)
-##Overview
+## Overview
 
 go-videoSorter is written using [Cobra](https://github.com/spf13/cobra) library and uses [OMDB](http://www.omdbapi.com/) API in order to fetch data about movies/series and 
 can download posters and create text files containing information aboud movies/series. Infos such as
@@ -16,7 +16,7 @@ can download posters and create text files containing information aboud movies/s
  At first I wanted to sort videos based on each video's **metadata**. But it could take quite a while since reading each file could take a second or two. Also in some cases, metadatas didn't contain usful information such as title of the video which is the base resource for sorting.  
  Hence I turned to videoNames for sorting.  
 ##Installation
-##Sort
+## Sort
 sort command, sorts all the videos existing in the given **source directory** and all of its **subdirectories**
 base on the video **title** and **if series**, also **seasons** and **episodes**.  
 It works based on the **name of videos**, so in case of irrelevant video namings, sorting series might not work properly.  
@@ -75,7 +75,7 @@ destinationDir
 ![1917](./1917.jpg?raw=true)
 
 Also using --createTxt/-c will place 1917.txt by this format under `1917/`
-```cassandraql
+```
 https://github.com/pwdz 
 ============O_o============
 Title: 1917
@@ -99,13 +99,13 @@ sort command usage:
 ```
 govideo sort sourceDirectory [DestinationDirectory] [--dlImage/-d][--createTxt/-c]
 ```
-###Download Image
+### Download Image
 download command can be used in two ways, first by the [videoName --video/-v] and second by giving it the URL of any image after download it will place it under destionationDir.  
 download command usage:   
 ```
 govideo download destinationDir [videoName --video/-v]/[URL]
 ```
-###Searching for Information
+### Searching for Information
 search command finds the info of the given videoName and prints the results. If giving destionation, besides printing result, text files of the result will be created under destionationDir.  
 If using --search/-s, it will search for all the movies and series that contain the given videoName.  
 
