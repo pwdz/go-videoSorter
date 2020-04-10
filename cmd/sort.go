@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"sorter/sortFuncs"
+	"go-videoSorter/sortFuncs"
 )
 
 var createTextFile,downloadImg bool

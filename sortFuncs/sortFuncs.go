@@ -3,7 +3,7 @@ package sortFuncs
 import (
 	"fmt"
 	"path"
-	"sorter/requests"
+	"go-videoSorter/requests"
 	"log"
 	"os"
 	"path/filepath"

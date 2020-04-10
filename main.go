@@ -14,7 +14,7 @@
 package main
 
 import (
-	"sorter/cmd"
+	"go-videoSorter/cmd"
 )
 func main() {
 	//fmt.Println("here u go:")

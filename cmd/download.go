@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"sorter/requests"
-	"sorter/sortFuncs"
+	"go-videoSorter/requests"
+	"go-videoSorter/sortFuncs"
 )
 var isVideo bool
 var search bool
